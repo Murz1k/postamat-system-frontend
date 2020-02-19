@@ -1,0 +1,312 @@
+<h1>Список заказов</h1>
+<div class="button-container">
+    <button mat-button color="primary" (click)="createOrder()">Добавить заказ</button>
+</div>
+<div class="table-container">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="supplier">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['supplier']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].supplier">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.supplier}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="orderId">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['orderId']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].orderId">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.orderId}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="externalId">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['externalId']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].externalId">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.externalId}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customerName">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['customerName']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].customerName">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.customerName}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customerPhone">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['customerPhone']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].customerPhone">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.customerPhone}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customerExternalId">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['customerExternalId']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].customerExternalId">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.customerExternalId}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customerEmail">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['customerEmail']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].customerEmail">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.customerEmail}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customerDeliveryAddress">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['customerDeliveryAddress']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].customerDeliveryAddress">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.customerDeliveryAddress}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="productSize">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['productSize']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].productSize">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.productSize}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="productWidth">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['productWidth']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].productWidth">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.productWidth}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="productHeight">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['productHeight']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].productHeight">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.productHeight}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="productDepth">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['productDepth']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].productDepth">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.productDepth}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="productWeight">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['productWeight']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].productWeight">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.productWeight}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="productExternalBarCode">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['productExternalBarCode']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].productExternalBarCode">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.productExternalBarCode}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="productManufacturerBarCode">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['productManufacturerBarCode']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].productManufacturerBarCode">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.productManufacturerBarCode}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="externalPackaging">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['externalPackaging']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].externalPackaging">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.externalPackaging}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="postamateUploadType">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['postamateUploadType']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].postamateUploadType">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.postamateUploadType}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="postamateId">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['postamateId']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].postamateId">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.postamateId}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="vendorCode">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['vendorCode']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].vendorCode">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.vendorCode}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="manufacturer">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['manufacturer']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].manufacturer">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.manufacturer}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="productName">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['productName']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].productName">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.productName}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['quantity']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].quantity">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.quantity}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['price']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].price">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.price}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="sum">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['sum']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].sum">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.sum}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="manufacturerCountry">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['manufacturerCountry']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].manufacturerCountry">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.manufacturerCountry}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="gtd">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['gtd']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].gtd">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.gtd}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="vat">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['vat']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].vat">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.vat}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="paymentType">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['paymentType']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableOrders[element.id]">
+                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].paymentType">
+                </ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.paymentType}}</ng-container>
+            </td>
+        </ng-container>
+
+        <!-- Star Column -->
+        <ng-container matColumnDef="star" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <ng-container *ngIf="editableOrders[element.id]">
+                        <button mat-menu-item (click)="updateOrder(editableOrders[element.id])">Сохранить</button>
+                        <button mat-menu-item (click)="cancelEdit(element)">Отменить</button>
+                    </ng-container>
+                    <ng-container *ngIf="!editableOrders[element.id]">
+                        <button mat-menu-item (click)="startEdit(element)">Изменить</button>
+                        <button mat-menu-item (click)="deleteOrder(element)">Удалить</button>
+                    </ng-container>
+                </mat-menu>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
+<mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>

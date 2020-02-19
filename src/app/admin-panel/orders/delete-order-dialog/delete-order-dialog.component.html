@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Удаление заказа №{{data.orderId}}</h1>
+<div mat-dialog-content>
+    <p>Вы уверены что хотите удалить заказ?</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Отмена</button>
+    <button mat-button [mat-dialog-close]="data" >Да</button>
+</div>

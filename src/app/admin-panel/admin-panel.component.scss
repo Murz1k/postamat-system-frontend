@@ -1,0 +1,14 @@
+.sidenav-trigger{
+  display: block !important;
+  cursor: pointer;
+}
+
+.collapsible-accordion{
+  li{
+    width: 100%;
+  }
+}
+
+.sidenav .collapsible .collapsible-body{
+  background-color: transparent;
+}

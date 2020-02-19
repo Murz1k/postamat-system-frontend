@@ -1,0 +1,223 @@
+<div class="header-container">
+    <h1>Сообщения пользователей</h1>
+    <button mat-button (click)="showSettings()">
+        <mat-icon>settings</mat-icon>
+    </button>
+</div>
+<mat-tab-group (selectedIndexChange)="tabIndexChanged($event)">
+    <mat-tab label="Отправленные">
+        <div class="dates-container">
+            <mat-form-field>
+                <mat-label>Выберите дату</mat-label>
+                <input matInput [matDatepicker]="picker1" [(ngModel)]="fromDate" (ngModelChange)="changeDate()">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Выберите дату</mat-label>
+                <input matInput [matDatepicker]="picker2" [(ngModel)]="toDate" (ngModelChange)="changeDate()">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+            <button mat-button (click)="reloadMessages()">Обновить</button>
+        </div>
+        <div class="table-container">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                <ng-container matColumnDef="messageId">
+                    <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['messageId']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">{{element.messageId}}</ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="phoneNumber">
+                    <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['phoneNumber']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">{{element.phoneNumber}}</ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="message">
+                    <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['message']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">{{element.message}}</ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="sendResult">
+                    <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['sendResult']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container [ngSwitch]="element.sendResult">
+                            <ng-container *ngSwitchCase="MessageSendResult.NoError">Нет ошибки</ng-container>
+                            <ng-container *ngSwitchCase="MessageSendResult.RequestParametersError">Ошибка параметров запроса</ng-container>
+                            <ng-container *ngSwitchCase="MessageSendResult.WrongCredentials">Неправильные учетные данные</ng-container>
+                            <ng-container *ngSwitchCase="MessageSendResult.NotEnoughtMoney">Недостаточно денег</ng-container>
+                            <ng-container *ngSwitchCase="MessageSendResult.IpBlocked">IP заблокирован</ng-container>
+                            <ng-container *ngSwitchCase="MessageSendResult.WrongDateFormat">Неверный формат даты</ng-container>
+                            <ng-container *ngSwitchCase="MessageSendResult.MessageProhibited">Сообщение запрещено</ng-container>
+                            <ng-container *ngSwitchCase="MessageSendResult.WrongPhoneFormat">Неверный формат телефона</ng-container>
+                            <ng-container *ngSwitchCase="MessageSendResult.MessageCannotBeDelivered">Сообщение не может быть доставлено</ng-container>
+                            <ng-container *ngSwitchCase="MessageSendResult.TooManyRequests">Слишком много запросов</ng-container>
+                            <ng-container *ngSwitchCase="MessageSendResult.Queue">Очередь</ng-container>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['status']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">
+                            <ng-container [ngSwitch]="element.status">
+                                <ng-container *ngSwitchCase="NotificationStatus.Delivered">Доставлено</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.Read">Прочитано</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.Expired">Просрочено</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.LinkClicked">Клик по ссылке</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.UnableToDeliver">Нельзя доставить</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.WrongNumber">Неправильный номер</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.NotEnoughtMoney">Не хватает денег</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.NotRequested">Не запрошен</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.NotFound">Не найден</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.Stopped">Остановлен</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.WaitToSent">Ожидает отправки</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.TransferedToOperator">Передача оператору</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.Prohibited">Запрещено</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.InaccessibleNumber">Номер недоступен</ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="registeredTimestamp">
+                    <th mat-header-cell
+                        *matHeaderCellDef>{{clientNotificationService.fieldNames['registeredTimestamp']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">{{element.registeredTimestamp | tickDate:'hh:mm:ss'}}</ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="sendingTimeStamp">
+                    <th mat-header-cell
+                        *matHeaderCellDef>{{clientNotificationService.fieldNames['sendingTimeStamp']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">{{element.sendingTimeStamp | tickDate:'hh:mm:ss'}}</ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="lastChangeStatusTimestamp">
+                    <th mat-header-cell
+                        *matHeaderCellDef>{{clientNotificationService.fieldNames['lastChangeStatusTimestamp']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container
+                                *ngIf="!editableTexts[element.id]">{{element.lastChangeStatusTimestamp | tickDate:'hh:mm:ss'}}</ng-container>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row [class.error]="isErrorStatus(row.status)" *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+        <mat-paginator #paginator1 [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+    </mat-tab>
+    <mat-tab label="В очереди на отправку">
+        <div class="table-container">
+            <table mat-table [dataSource]="queueDataSource" class="mat-elevation-z8">
+
+                <ng-container matColumnDef="messageId">
+                    <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['messageId']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">{{element.messageId}}</ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="phoneNumber">
+                    <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['phoneNumber']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">{{element.phoneNumber}}</ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="message">
+                    <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['message']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">{{element.message}}</ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="sendResult">
+                    <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['sendResult']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">
+                            <ng-container [ngSwitch]="element.sendResult">
+                                <ng-container *ngSwitchCase="MessageSendResult.NoError">Нет ошибки</ng-container>
+                                <ng-container *ngSwitchCase="MessageSendResult.RequestParametersError">Ошибка параметров запроса</ng-container>
+                                <ng-container *ngSwitchCase="MessageSendResult.WrongCredentials">Неправильные учетные данные</ng-container>
+                                <ng-container *ngSwitchCase="MessageSendResult.NotEnoughtMoney">Недостаточно денег</ng-container>
+                                <ng-container *ngSwitchCase="MessageSendResult.IpBlocked">IP заблокирован</ng-container>
+                                <ng-container *ngSwitchCase="MessageSendResult.WrongDateFormat">Неверный формат даты</ng-container>
+                                <ng-container *ngSwitchCase="MessageSendResult.MessageProhibited">Сообщение запрещено</ng-container>
+                                <ng-container *ngSwitchCase="MessageSendResult.WrongPhoneFormat">Неверный формат телефона</ng-container>
+                                <ng-container *ngSwitchCase="MessageSendResult.MessageCannotBeDelivered">Сообщение не может быть доставлено</ng-container>
+                                <ng-container *ngSwitchCase="MessageSendResult.TooManyRequests">Слишком много запросов</ng-container>
+                                <ng-container *ngSwitchCase="MessageSendResult.Queue">Очередь</ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['status']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">
+                            <ng-container [ngSwitch]="element.status">
+                                <ng-container *ngSwitchCase="NotificationStatus.Delivered">Доставлено</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.Read">Прочитано</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.Expired">Просрочено</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.LinkClicked">Клик по ссылке</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.UnableToDeliver">Нельзя доставить</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.WrongNumber">Неправильный номер</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.NotEnoughtMoney">Не хватает денег</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.NotRequested">Не запрошен</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.NotFound">Не найден</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.Stopped">Остановлен</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.WaitToSent">Ожидает отправки</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.TransferedToOperator">Передача оператору</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.Prohibited">Запрещено</ng-container>
+                                <ng-container *ngSwitchCase="NotificationStatus.InaccessibleNumber">Номер недоступен</ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="registeredTimestamp">
+                    <th mat-header-cell
+                        *matHeaderCellDef>{{clientNotificationService.fieldNames['registeredTimestamp']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">{{element.registeredTimestamp | tickDate:'hh:mm:ss'}}</ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="sendingTimeStamp">
+                    <th mat-header-cell
+                        *matHeaderCellDef>{{clientNotificationService.fieldNames['sendingTimeStamp']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="!editableTexts[element.id]">{{element.sendingTimeStamp | tickDate:'hh:mm:ss'}}</ng-container>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="lastChangeStatusTimestamp">
+                    <th mat-header-cell
+                        *matHeaderCellDef>{{clientNotificationService.fieldNames['lastChangeStatusTimestamp']}}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container
+                                *ngIf="!editableTexts[element.id]">{{element.lastChangeStatusTimestamp | tickDate:'hh:mm:ss'}}</ng-container>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr [class.error]="isErrorStatus(row.status)" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+        <mat-paginator #paginator1 [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+    </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,79 @@
+<nav class="top-nav">
+  <div class="nav-wrapper">
+    <a data-target="sidenav-left" class="sidenav-trigger left">
+      <i class="material-icons black-text">menu</i>
+    </a>
+    <ul class="right">
+      <li *ngIf="userRole < 300">
+        <a (click)="changePassword()">
+          <i class="material-icons black-text">person</i>
+        </a>
+      </li>
+      <li>
+        <a (click)="logout()" class="right">
+          <i class="material-icons black-text">exit_to_app</i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<ul id="sidenav-left" class="sidenav orange darken-3">
+  <li>
+    <ul class="collapsible collapsible-accordion">
+      <li class="bold waves-effect">
+        <a class="collapsible-header">
+          Настройки
+          <i class="material-icons">settings</i>
+        </a>
+        <div class="collapsible-body">
+          <ul>
+            <li *ngIf="userRole >= 300">
+              <a routerLink="user" class="waves-effect sidenav-close">Пользователи</a>
+            </li>
+            <li>
+              <a routerLink="pick-up-point" class="waves-effect sidenav-close">Постаматы</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="bold waves-effect">
+        <a class="collapsible-header">
+          Состояние
+          <i class="material-icons">storage</i>
+        </a>
+        <div class="collapsible-body">
+          <ul>
+            <li>
+              <a routerLink="cells" class="waves-effect sidenav-close">Ячейки</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="bold waves-effect">
+        <a class="collapsible-header">
+          Информирование клиентов
+          <i class="material-icons">storage</i>
+        </a>
+        <div class="collapsible-body">
+          <ul>
+            <li>
+              <a routerLink="orders" class="waves-effect sidenav-close">Заказы</a>
+            </li>
+            <li>
+              <a routerLink="message-templates" class="waves-effect sidenav-close">Шаблоны сообщений</a>
+            </li>
+            <li>
+              <a routerLink="messages" class="waves-effect sidenav-close">Сообщения</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </li>
+  <li></li>
+</ul>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

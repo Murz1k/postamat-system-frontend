@@ -1,0 +1,172 @@
+<h1>Добавление заказа</h1>
+<form [formGroup]="form">
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['supplier']}}</mat-label>
+    <input matInput formControlName="supplier">
+  </mat-form-field>
+
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['orderId']}}</mat-label>
+    <input matInput formControlName="orderId">
+  </mat-form-field>
+
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['externalId']}}</mat-label>
+    <input matInput formControlName="externalId">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['customerName']}}</mat-label>
+    <input matInput formControlName="customerName">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['customerPhone']}}</mat-label>
+    <input matInput formControlName="customerPhone">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['customerExternalId']}}</mat-label>
+    <input matInput formControlName="customerExternalId">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['customerEmail']}}</mat-label>
+    <input matInput formControlName="customerEmail">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['customerDeliveryAddress']}}</mat-label>
+    <input matInput formControlName="customerDeliveryAddress">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['productSize']}}</mat-label>
+    <input matInput formControlName="productSize">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['productWidth']}}</mat-label>
+    <input matInput formControlName="productWidth" type="number">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['productHeight']}}</mat-label>
+    <input matInput formControlName="productHeight" type="number">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['productDepth']}}</mat-label>
+    <input matInput formControlName="productDepth" type="number">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['productWeight']}}</mat-label>
+    <input matInput formControlName="productWeight" type="number">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['productExternalBarCode']}}</mat-label>
+    <input matInput formControlName="productExternalBarCode">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['productManufacturerBarCode']}}</mat-label>
+    <input matInput formControlName="productManufacturerBarCode">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['externalPackaging']}}</mat-label>
+    <input matInput formControlName="externalPackaging">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['postamateUploadType']}}</mat-label>
+    <input matInput formControlName="postamateUploadType">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['postamateId']}}</mat-label>
+    <input matInput formControlName="postamateId">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['vendorCode']}}</mat-label>
+    <input matInput formControlName="vendorCode">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['manufacturer']}}</mat-label>
+    <input matInput formControlName="manufacturer">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['productName']}}</mat-label>
+    <input matInput formControlName="productName">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['quantity']}}</mat-label>
+    <input matInput formControlName="quantity" type="number">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['price']}}</mat-label>
+    <input matInput formControlName="price" type="number">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['sum']}}</mat-label>
+    <input matInput formControlName="sum" type="number">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['manufacturerCountry']}}</mat-label>
+    <input matInput formControlName="manufacturerCountry">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['gtd']}}</mat-label>
+    <input matInput formControlName="gtd" type="number">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['vat']}}</mat-label>
+    <input matInput formControlName="vat" type="number">
+  </mat-form-field>
+  <!-- <br> -->
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{orderService.fieldNames['paymentType']}}</mat-label>
+    <input matInput formControlName="paymentType" type="number">
+  </mat-form-field>
+  <!-- <br> -->
+</form>
+
+<button mat-button (click)="addOrder()" color="primary">Добавить</button>

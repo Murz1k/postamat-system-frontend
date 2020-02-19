@@ -1,0 +1,75 @@
+<ngx-spinner
+        bdOpacity = 0.9
+        bdColor = "#333"
+        size = "large"
+        color = "#fff"
+        type = "square-jelly-box"
+        [fullScreen] = "true">
+  <p style="color: white" > {{spinnerText}} </p>
+</ngx-spinner>
+
+<h1>Настройки пользователей</h1>
+<div *ngIf="users === undefined">
+  <p class="info-text">Загрузка списка пользователей</p>
+</div>
+<div *ngIf="users !== undefined">
+  <p class="info-text" *ngIf="users === null || users.length === 0">Пользователи отсутствуют</p>
+  <button class="btn waves-effect waves-light" (click)="addUser()">
+    Добавить пользователя
+  </button>
+  <table *ngIf="users.length !== null || users.length > 0" class="responsive-table">
+    <thead>
+    <tr>
+      <th>№</th>
+      <th>Имя</th>
+      <th>Роль</th>
+      <th>Описание</th>
+      <th>Доступ</th>
+      <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users; let k = index">
+      <td>{{k + 1}}</td>
+      <td>{{user.name}}</td>
+      <td>{{getUserRoleDescription(user)}}</td>
+      <td>{{user.description}}</td>
+      <td *ngIf="user.role <= 100" style="padding: 5px 0">
+        <span>
+          <button class="btn waves-effect waves-light modal-trigger" (click)="addUserCellsAdvancedSettings(user)">
+            Ячейки
+          </button>
+        </span>
+        <span>
+          <button class="btn waves-effect waves-light modal-trigger" (click)="addUserPickUpPointAdvancedSettings(user)">
+            Постаматы
+          </button>
+        </span>
+      </td>
+      <td *ngIf="user.role > 100" style="height: 47px">
+        Полный доступ
+      </td>
+      <td style="padding: 5px 0">
+        <span>
+          <button class="btn btn-small grey waves-effect" (click)="changeSelectedUser(user.id)">
+            <i class="material-icons">mode_edit</i>
+          </button>
+        </span>
+        <span>
+          <button class="btn btn-small grey darken-1 waves-effect" (click)="resetUserPassword(user)">
+            <i class="material-icons">lock_open</i>
+          </button>
+        </span>
+        <span>
+          <button class="btn btn-small red waves-effect" (click)="deleteUser(user)">
+            <i class="material-icons">delete</i>
+          </button>
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+
+

@@ -1,0 +1,65 @@
+<h1>Шаблоны смс текстов</h1>
+<div class="button-container">
+    <button mat-button color="primary" (click)="createTemplate()">Добавить шаблон</button>
+</div>
+<div class="table-container">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="message">
+            <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['message']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableTexts[element.id]">
+                    <input matInput (keyup.enter)="updateMessage(editableTexts[element.id])"
+                           [(ngModel)]="editableTexts[element.id].message">
+                </ng-container>
+                <ng-container *ngIf="!editableTexts[element.id]">{{element.message}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['description']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableTexts[element.id]">
+                    <input matInput (keyup.enter)="updateMessage(editableTexts[element.id])"
+                           [(ngModel)]="editableTexts[element.id].description">
+                </ng-container>
+                <ng-container *ngIf="!editableTexts[element.id]">{{element.description}}</ng-container>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['status']}}</th>
+            <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
+                <ng-container *ngIf="editableTexts[element.id]">
+                    <input matInput (keyup.enter)="updateMessage(editableTexts[element.id])"
+                           [(ngModel)]="editableTexts[element.id].status">
+                </ng-container>
+                <ng-container *ngIf="!editableTexts[element.id]">{{element.status}}</ng-container>
+            </td>
+        </ng-container>
+
+        <!-- Star Column -->
+        <ng-container matColumnDef="star" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <ng-container *ngIf="editableTexts[element.id]">
+                        <button mat-menu-item (click)="updateMessage(editableTexts[element.id])">Сохранить</button>
+                        <button mat-menu-item (click)="cancelEdit(element)">Отменить</button>
+                    </ng-container>
+                    <ng-container *ngIf="!editableTexts[element.id]">
+                        <button mat-menu-item (click)="startEdit(element)">Изменить</button>
+                        <button mat-menu-item (click)="deleteMessage(element)">Удалить</button>
+                    </ng-container>
+                </mat-menu>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
+<mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>

@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="input-field col s12">
+        <label for="name">Имя</label>
+        <input id="name" type="text" #name="ngModel" required [(ngModel)]="data.name">
+        <span class="helper-text red-text" *ngIf="!data.name && name.touched">
+            Введите имя
+        </span>
+    </div>
+
+    <div class="input-field col s12">
+        <label for="password">Пароль</label>
+        <input id="password" type="text" #password="ngModel" required [(ngModel)]="data.password">
+        <span class="helper-text red-text" *ngIf="!data.password && password.touched">
+            Введите пароль
+        </span>
+    </div>
+
+    <div class="input-field col s12">
+        <select [(ngModel)]="data.role" name="data.role" #role="ngModel" required>
+            <option value="" disabled selected>Выберите роль</option>
+            <option *ngFor="let role of userRoles" [value]="role.role">
+                {{role.description}}
+            </option>
+        </select>
+        <label>Роль</label>
+        <span class="helper-text red-text" *ngIf="!data.role && role.touched">
+            Выберите пользователя
+        </span>
+    </div>
+
+    <div class="input-field col s12">
+        <label for="description">Описание</label>
+        <input id="description" type="text" [(ngModel)]="data.description">
+    </div>
+
+    <div>
+        <button class="btn btn-small waves-effect waves-light"
+                [mat-dialog-close]="data"
+                [disabled]="!data.name || !data.password || !data.role">
+            Готово
+        </button>
+    </div>
+</div>

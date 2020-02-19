@@ -1,0 +1,21 @@
+<h1>Добавление заказа</h1>
+<form [formGroup]="form">
+  <mat-form-field appearance="fill">
+    <mat-label>{{clientNotificationService.fieldNames['message']}}</mat-label>
+    <input matInput formControlName="message">
+  </mat-form-field>
+
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{clientNotificationService.fieldNames['description']}}</mat-label>
+    <input matInput formControlName="description">
+  </mat-form-field>
+
+
+  <mat-form-field appearance="fill">
+    <mat-label>{{clientNotificationService.fieldNames['status']}}</mat-label>
+    <input matInput formControlName="status">
+  </mat-form-field>
+</form>
+
+<button mat-button (click)="addOrder()" color="primary">Добавить</button>

@@ -1,0 +1,68 @@
+<ngx-spinner
+    bdOpacity=0.9
+    bdColor="#333"
+    size="large"
+    color="#fff"
+    type="square-jelly-box"
+    [fullScreen]="true">
+  <p style="color: white"> {{spinnerText}} </p>
+</ngx-spinner>
+
+<h1>Список постаматов</h1>
+<div *ngIf="pickUpPoints === undefined">
+  <p class="info-text">Загрузка списка постаматов</p>
+</div>
+<div *ngIf="pickUpPoints !== undefined">
+  <p class="info-text" *ngIf="pickUpPoints === null || pickUpPoints.length === 0">Список постаматов пуст</p>
+  <button class="btn waves-effect waves-light"
+          (click)="createNewPickUpPoint()"
+          *ngIf="userRole >= 300">
+    Добавить постамат
+  </button>
+  <table *ngIf="pickUpPoints !== null && pickUpPoints.length > 0" class="responsive-table">
+    <thead>
+    <tr>
+      <th>№</th>
+      <th>Название</th>
+      <th>Место нахождения</th>
+      <th>IP адресс</th>
+      <th>Порт</th>
+      <th>Состояние связи</th>
+      <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let pup of pickUpPoints; let k = index">
+      <td>{{k + 1}}</td>
+      <td>{{pup.name}}</td>
+      <td>{{pup.location}}</td>
+      <td>{{pup.ip}}</td>
+      <td>{{pup.port}}</td>
+      <td style="padding: 15px 0">
+        <i class="material-icons"
+           [ngClass]="pup.isOnline ? 'success-class' : 'error-class'">
+          {{pup.isOnline ? 'check_circle' : 'error'}}
+        </i>
+      </td>
+      <td style="padding: 0">
+        <span *ngIf="userRole >= 300">
+          <button class="btn btn-small grey waves-effect" (click)="updatePickUpPoint(pup.id)">
+            <i class="material-icons">mode_edit</i>
+          </button>
+        </span>
+        <span>
+          <button class="btn btn-small grey darken-1 waves-effect" (click)="getCellsInCurrentPickUpPoint(pup.id)">
+            <i class="material-icons">format_list_bulleted</i>
+          </button>
+        </span>
+        <span *ngIf="userRole >= 300">
+          <button class="btn btn-small red waves-effect" (click)="removePickUpPoint(pup.id)">
+            <i class="material-icons">delete</i>
+          </button>
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+

@@ -1,0 +1,39 @@
+.content-container{
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+header{
+  position: relative;
+  img{
+    width: 100%;
+  }
+  .overlay{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    transition: .5s ease;
+    background-color: rgba(18, 17, 128, 0.81);
+  }
+  h1, p{
+    color: white;
+    text-align: center;
+  }
+  h1{
+    padding-top: 6em;
+    font:{
+      size: 60px;
+    };
+  }
+  p{
+    padding-top: 1em;
+    font:{
+      size: 30px;
+    }
+  }
+}

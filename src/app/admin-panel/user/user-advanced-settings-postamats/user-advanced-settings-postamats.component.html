@@ -1,0 +1,13 @@
+<p>Расширенные настройки пользователя. Доступ к постаматам.</p>
+<div>
+    <div class="switch" *ngFor="let p of data">
+        <label>
+            <input type="checkbox" [(ngModel)]="p.isAccess">
+            <span class="lever"></span>
+            {{p.name}}
+        </label>
+    </div>
+</div>
+<button class="btn btn-small waves-effect waves-light" [mat-dialog-close]="data">
+    Готово
+</button>

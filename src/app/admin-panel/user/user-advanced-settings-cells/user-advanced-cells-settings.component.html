@@ -1,0 +1,34 @@
+<p>Расширенные настройки пользователя. Действия по ячейкам.</p>
+<div>
+    <div class="switch">
+        <label>
+            <input type="checkbox" [(ngModel)]="data.isAllowOpenCell">
+            <span class="lever"></span>
+            Разрешить принудительно открывать ячейки
+        </label>
+    </div>
+    <div class="switch">
+        <label>
+            <input type="checkbox" [(ngModel)]="data.isShowPinCode">
+            <span class="lever"></span>
+            Показывать пин код ячейки
+        </label>
+    </div>
+    <div class="switch">
+        <label>
+            <input type="checkbox" [(ngModel)]="data.isAllowAddWaitLoadItems">
+            <span class="lever"></span>
+            Разрешить добавлять в список ожидания загрузки
+        </label>
+    </div>
+    <div class="switch">
+        <label>
+            <input type="checkbox" [(ngModel)]="data.isAllowReserveForReturn">
+            <span class="lever"></span>
+            Разрешить резервировать ячейку для возврата
+        </label>
+    </div>
+</div>
+<button class="btn btn-small waves-effect waves-light" [mat-dialog-close]="data">
+    Готово
+</button>

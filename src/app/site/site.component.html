@@ -1,0 +1,19 @@
+<nav class="top-nav">
+    <div class="nav-wrapper">
+        <a data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <a routerLink="/" class="brand-logo">Logo</a>
+        <ul class="right hide-on-med-and-down">
+            <li>
+                <a routerLink="login">Войти</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<ul class="sidenav orange darken-3" id="mobile-demo">
+    <li>
+        <a class="sidenav-close" routerLink="login">Войти</a>
+    </li>
+</ul>
+
+<router-outlet></router-outlet>
