@@ -51,6 +51,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+@angular/cdk/scrolling
+
 @angular/common
 MIT
 
@@ -85,9 +87,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+@angular/material/bottom-sheet
+
 @angular/material/button
 
+@angular/material/checkbox
+
 @angular/material/core
+
+@angular/material/datepicker
 
 @angular/material/dialog
 
@@ -101,7 +109,13 @@ THE SOFTWARE.
 
 @angular/material/select
 
+@angular/material/snack-bar
+
 @angular/material/table
+
+@angular/material/tabs
+
+@angular/material/tooltip
 
 @angular/platform-browser
 MIT
@@ -135,6 +149,9 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+@ant-design/icons-angular
+MIT
+
 @zxing/library
 MIT
 MIT License
@@ -160,40 +177,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
-date-fns
-MIT
-# License
-
-date-fns is licensed under the [MIT license](http://kossnocorp.mit-license.org).
-Read more about MIT at [TLDRLegal](https://tldrlegal.com/license/mit-license).
-
-
-ngx-take-until-destroy
-MIT
-
-undefined
-
-@angular/cdk/scrolling
-
-@angular/material/bottom-sheet
-
-@angular/material/checkbox
-
-@angular/material/datepicker
-
-@angular/material/divider
-
-@angular/material/list
-
-@angular/material/snack-bar
-
-@angular/material/tabs
-
-@angular/material/tooltip
-
-@ant-design/icons-angular
-MIT
-
 @zxing/ngx-scanner
 
 core-js
@@ -217,6 +200,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+
+date-fns
+MIT
+# License
+
+date-fns is licensed under the [MIT license](http://kossnocorp.mit-license.org).
+Read more about MIT at [TLDRLegal](https://tldrlegal.com/license/mit-license).
 
 
 hammerjs
@@ -294,17 +285,9 @@ ng-zorro-antd/notification
 
 ng-zorro-antd/pagination
 
-ng-zorro-antd/popconfirm
-
-ng-zorro-antd/popover
-
 ng-zorro-antd/radio
 
-ng-zorro-antd/select
-
 ng-zorro-antd/spin
-
-ng-zorro-antd/table
 
 ng-zorro-antd/time-picker
 
@@ -312,6 +295,19 @@ ng-zorro-antd/tooltip
 
 ngx-spinner
 MIT
+
+ngx-take-until-destroy
+MIT
+
+undefined
+
+ng-zorro-antd/popconfirm
+
+ng-zorro-antd/popover
+
+ng-zorro-antd/select
+
+ng-zorro-antd/table
 
 rxjs
 Apache-2.0
