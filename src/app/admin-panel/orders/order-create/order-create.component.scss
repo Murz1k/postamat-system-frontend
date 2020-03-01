@@ -1,12 +1,16 @@
-
 h1 {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  text-align: center;
+  margin: 0 auto 20px;
 }
 
 form {
-  height: 60vh;
+  height: 86%;
   overflow: auto;
+  margin-bottom: 20px;
+
+  mat-form-field {
+    width: 100%;
+  }
 }
 
 button {

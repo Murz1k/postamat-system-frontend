@@ -14,6 +14,7 @@ import {
 import { OrderCreateComponent } from './order-create/order-create.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DeleteOrderDialogComponent } from './delete-order-dialog/delete-order-dialog.component';
+import {NgxSpinnerModule} from 'ngx-spinner';
 
 
 
@@ -34,6 +35,7 @@ import { DeleteOrderDialogComponent } from './delete-order-dialog/delete-order-d
         MatMenuModule,
         MatDialogModule,
         FormsModule,
+        NgxSpinnerModule,
     ],
     entryComponents: [DeleteOrderDialogComponent, OrderCreateComponent]
 })

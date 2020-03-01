@@ -14,6 +14,7 @@ import { SiteComponent } from './site.component';
 import { Error404Component } from './error404/error404.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from '../admin-panel/login/login.component';
+import {ZXingScannerModule} from '@zxing/ngx-scanner';
 
 @NgModule({
   declarations: [
@@ -25,15 +26,16 @@ import { LoginComponent } from '../admin-panel/login/login.component';
   providers: [
     AuthService
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    DemoMaterialModule,
-    MatNativeDateModule,
-    ReactiveFormsModule,
-    SiteRoutingModule,
-    NgxSpinnerModule
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        HttpClientModule,
+        DemoMaterialModule,
+        MatNativeDateModule,
+        ReactiveFormsModule,
+        SiteRoutingModule,
+        NgxSpinnerModule,
+        ZXingScannerModule,
+    ],
 })
 export class SiteModule { }

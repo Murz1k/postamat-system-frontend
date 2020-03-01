@@ -6,6 +6,7 @@ import {untilDestroyed} from 'ngx-take-until-destroy';
 import {MatDialogRef} from '@angular/material';
 import {ClientNotificationService} from '../client-notification.service';
 import {NotificationTemplateDto} from '../_models/notification-template-dto';
+import {NotificationStatus} from '../../messages/_models/notification-status';
 
 @Component({
     selector: 'app-message-template',
@@ -16,11 +17,15 @@ export class MessageTemplateCreateComponent implements OnInit, OnDestroy {
     form: FormGroup;
     private tasksSubject: BehaviorSubject<Observable<any>> = new BehaviorSubject<Observable<any>>(undefined);
 
+    statuses: { label: string, value: NotificationStatus }[] = [];
+
     constructor(public dialogRef: MatDialogRef<MessageTemplateCreateComponent>,
                 private fb: FormBuilder, public clientNotificationService: ClientNotificationService) {
     }
 
     ngOnInit() {
+        this.statuses = this.clientNotificationService.getStatusDictionary();
+
         this.tasksSubject
             .pipe(
                 untilDestroyed(this),
@@ -37,11 +42,11 @@ export class MessageTemplateCreateComponent implements OnInit, OnDestroy {
         });
 
         // Для теста
-        this.form.patchValue({
-            message: 'string',
-            description: 'string',
-            status: 0,
-        });
+        // this.form.patchValue({
+        //     message: 'string',
+        //     description: 'string',
+        //     status: 0,
+        // });
     }
 
     addOrder() {

@@ -2,12 +2,14 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatDialog, MatPaginator, MatTableDataSource} from '@angular/material';
 import {BehaviorSubject, fromEvent, interval} from 'rxjs';
 import {untilDestroyed} from 'ngx-take-until-destroy';
-import {debounceTime, distinctUntilChanged, filter, switchMap, tap} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, finalize, switchMap, tap} from 'rxjs/operators';
 import {SentMessage} from '../_models/sent-message';
 import {MessagesService} from '../messages.service';
 import {NotificationsSettingsDialogComponent} from '../notifications-settings-dialog/notifications-settings-dialog.component';
 import {NotificationStatus} from '../_models/notification-status';
-import { MessageSendResult } from '../_models/message-send-result';
+import {MessageSendResult} from '../_models/message-send-result';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {ClientNotificationService} from '../../message-templates/client-notification.service';
 
 @Component({
     selector: 'app-message-templates-list',
@@ -37,16 +39,17 @@ export class MessagesListComponent implements OnInit, OnDestroy {
         'lastChangeStatusTimestamp',
     ];
 
-    fromDate = new Date();
-    toDate = new Date();
+    dateRange = [new Date(), new Date()];
     private dateChanges$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+    spinnerText = '';
 
-    constructor(public clientNotificationService: MessagesService, public dialog: MatDialog) {
+    constructor(private spinner: NgxSpinnerService,
+                public notificationTemplateService: ClientNotificationService,
+                public clientNotificationService: MessagesService, public dialog: MatDialog) {
     }
 
     ngOnInit() {
-        this.fromDate = new Date(this.toDate.getTime() - 5 * 24 * 60 * 60 * 1000);
-        this.toDate = new Date();
+        this.dateRange[0] = new Date(this.dateRange[1].getTime() - 5 * 24 * 60 * 60 * 1000);
 
         fromEvent(document, 'keyup').pipe(
             untilDestroyed(this),
@@ -54,22 +57,28 @@ export class MessagesListComponent implements OnInit, OnDestroy {
             tap(() => this.editableTexts = {}),
         ).subscribe();
 
-
+        this.paginator1._intl.itemsPerPageLabel = 'Сообщений на странице';
         this.dataSource.paginator = this.paginator1;
         this.queueDataSource.paginator = this.paginator2;
 
         this.dateChanges$.pipe(
+            tap(() => {
+                this.spinnerText = 'Получение сообщений пользователей';
+                this.spinner.show();
+            }),
             distinctUntilChanged(),
             debounceTime(500),
             filter(value => value),
             tap(() => this.dateChanges$.next(false)),
-            switchMap(() => this.clientNotificationService.getMessages(this.fromDate.getTime(), this.toDate.getTime()).pipe(
+            switchMap(() => this.clientNotificationService.getMessages(this.dateRange[0].getTime(), this.dateRange[1].getTime()).pipe(
                 untilDestroyed(this),
                 tap(templates => this.dataSource.data = templates),
+                finalize(() => this.spinner.hide()),
                 switchMap(() => interval(60000).pipe(
-                    switchMap(() => this.clientNotificationService.getMessages(this.fromDate.getTime(), this.toDate.getTime()).pipe(
-                        tap(templates => this.dataSource.data = templates),
-                    )),
+                    switchMap(() =>
+                        this.clientNotificationService.getMessages(this.dateRange[0].getTime(), this.dateRange[1].getTime()).pipe(
+                            tap(templates => this.dataSource.data = templates),
+                        )),
                 )),
             )),
         ).subscribe();
@@ -79,6 +88,9 @@ export class MessagesListComponent implements OnInit, OnDestroy {
     }
 
     changeDate() {
+        if (!this.dateRange.length) {
+            this.dateRange = [new Date( new Date().getTime() - 5 * 24 * 60 * 60 * 1000), new Date()];
+        }
         this.dateChanges$.next(true);
     }
 

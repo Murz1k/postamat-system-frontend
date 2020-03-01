@@ -27,9 +27,39 @@
 
         <mat-label>Адрес стороннего сервиса уведомлений</mat-label>
         <input matInput [(ngModel)]="settings.serviceUrl">
+
+        <mat-label>Автоматически проверяемые статусы отправленных сообщений</mat-label>
+        <div class="table-container">
+            <button class="btn waves-effect waves-light" (click)="addStatus()">
+                <i nz-icon nzType="plus"></i>
+            </button>
+            <nz-table #smallTable nzSize="small" [nzData]="settings.automaticalyCheckedStatuses">
+                <thead>
+                <tr>
+                    <th>Название</th>
+                    <th style="width: 40px"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let data of smallTable.data; index as i;">
+                    <td>
+                        <mat-select [(ngModel)]="settings.automaticalyCheckedStatuses[i]">
+                            <mat-option *ngFor="let status of statuses" [value]="status.value">
+                                {{status.label}}
+                            </mat-option>
+                        </mat-select>
+                    </td>
+                    <td>
+                        <button nz-button nzType="danger" nzSize="small" (click)="deleteStatus(i)"><i nz-icon
+                                                                                                      nzType="close"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </nz-table>
+        </div>
     </div>
     <div mat-dialog-actions>
-        <button mat-button (click)="onNoClick()">Отмена</button>
-        <button mat-button [mat-dialog-close]="settings" color="primary">Сохранить</button>
+        <button class="btn waves-effect waves-light" [mat-dialog-close]="settings">Сохранить</button>
     </div>
 </ng-container>

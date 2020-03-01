@@ -1,14 +1,15 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {OrdersService} from '../orders.service';
-import {fromEvent} from 'rxjs';
+import {fromEvent, throwError} from 'rxjs';
 import {OrderDto} from '../_models/order-dto';
 import {MatDialog, MatPaginator, MatTable, MatTableDataSource} from '@angular/material';
-import {filter, switchMap, tap} from 'rxjs/operators';
+import {catchError, filter, finalize, map, switchMap, tap} from 'rxjs/operators';
 import {DeleteOrderDialogComponent} from '../delete-order-dialog/delete-order-dialog.component';
 import {untilDestroyed} from 'ngx-take-until-destroy';
-import {AddPickUpPointComponent} from '../../pick-up-point/add-pick-up-point/add-pick-up-point.component';
-import {PickUpPoint} from '../../../common/model/pick-up-point.model';
 import {OrderCreateComponent} from '../order-create/order-create.component';
+import {PickUpPointService} from '../../../common/service/pick-up-point.service';
+import {PickUpPoint} from '../../../common/model/pick-up-point.model';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
     selector: 'app-orders-list',
@@ -41,7 +42,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         'productManufacturerBarCode',
         'externalPackaging',
         'postamateUploadType',
-        'postamateId',
+        'postamate',
         'vendorCode',
         'manufacturer',
         'productName',
@@ -56,19 +57,43 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         'star', // Действия
     ];
 
-    constructor(public orderService: OrdersService, public dialog: MatDialog, private _el: ElementRef) {
+    postamates: PickUpPoint[] = [];
+    spinnerText = '';
+
+    constructor(private spinner: NgxSpinnerService,
+                public orderService: OrdersService, public dialog: MatDialog, private _el: ElementRef, public pickUpPointService: PickUpPointService) {
     }
 
     ngOnInit() {
+        this.paginator._intl.itemsPerPageLabel = 'Шаблонов на странице';
+        this.dataSource.paginator = this.paginator;
+
         fromEvent(document, 'keyup').pipe(
             untilDestroyed(this),
             filter((event: KeyboardEvent) => event.key === 'Escape' && Object.keys(this.editableOrders).length > 0),
             tap(() => this.editableOrders = {}),
         ).subscribe();
 
-
-        this.dataSource.paginator = this.paginator;
-        this.orderService.getOrders().pipe(tap(orders => this.dataSource.data = orders)).subscribe();
+        this.spinnerText = 'Получение списка заказов';
+        this.spinner.show();
+        this.pickUpPointService.getAllPickUpPoints().pipe(
+            untilDestroyed(this),
+            tap(postamates => this.postamates = postamates),
+            switchMap(() => this.orderService.getOrders().pipe(
+                untilDestroyed(this),
+                map(orders => orders.map(order => ({...order, postamate: this.postamates.find(i => i.id === order.postamateId)}))),
+                tap(orders => this.dataSource.data = orders),
+                catchError(err => {
+                    this.spinner.hide();
+                    return throwError(err);
+                }),
+                finalize(() => this.spinner.hide()),
+            )),
+            catchError(err => {
+                this.spinner.hide();
+                return throwError(err);
+            }),
+        ).subscribe();
     }
 
     deleteOrder(order: OrderDto) {
@@ -91,9 +116,12 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     createOrder() {
         this.dialog.open(OrderCreateComponent, {
             width: '45vw',
-            height: '80vh'
+            height: '80vh',
         }).afterClosed().subscribe((result: OrderDto) => {
             if (result !== undefined) {
+                if (this.postamates.length) {
+                    result['postamate'] = this.postamates.find(i => i.id === result.postamateId);
+                }
                 this.dataSource.data = [result, ...this.dataSource.data];
             }
         });
@@ -103,6 +131,9 @@ export class OrdersListComponent implements OnInit, OnDestroy {
         this.orderService.updateOrder(order).pipe(
             tap(() => {
                 const listItem = this.dataSource.data.find(i => i.id === order.id);
+                if (this.postamates.length) {
+                    listItem['postamate'] = this.postamates.find(i => i.id === listItem.postamateId);
+                }
                 Object.assign(listItem, this.editableOrders[order.id]);
                 this.editableOrders[order.id] = undefined;
             }),

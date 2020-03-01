@@ -8,12 +8,14 @@ import {
     MatIconModule,
     MatInputModule,
     MatMenuModule,
-    MatPaginatorModule,
+    MatPaginatorModule, MatSelectModule,
     MatTableModule, MatTabsModule,
 } from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NotificationsSettingsDialogComponent} from './notifications-settings-dialog/notifications-settings-dialog.component';
 import {TickDatePipeModule} from '../../common/components/tick-date.pipe/tick-date.pipe.module';
+import {NgxSpinnerModule} from 'ngx-spinner';
+import {NzButtonModule, NzDatePickerModule, NzIconModule, NzTableModule} from 'ng-zorro-antd';
 
 @NgModule({
   declarations: [MessagesListComponent, NotificationsSettingsDialogComponent],
@@ -33,6 +35,13 @@ import {TickDatePipeModule} from '../../common/components/tick-date.pipe/tick-da
         MatTabsModule,
         MatCheckboxModule,
         TickDatePipeModule,
+        NgxSpinnerModule,
+        NzDatePickerModule,
+        NzTableModule,
+        NzButtonModule,
+        NzIconModule,
+        MatSelectModule,
+        MatSelectModule,
     ],
     entryComponents: [NotificationsSettingsDialogComponent]
 })

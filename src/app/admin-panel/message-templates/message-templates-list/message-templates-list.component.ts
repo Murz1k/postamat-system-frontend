@@ -2,11 +2,13 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {MatDialog, MatPaginator, MatTable, MatTableDataSource} from '@angular/material';
 import {fromEvent} from 'rxjs';
 import {untilDestroyed} from 'ngx-take-until-destroy';
-import {filter, switchMap, tap} from 'rxjs/operators';
+import {filter, finalize, switchMap, tap} from 'rxjs/operators';
 import {NotificationTemplateDto} from '../_models/notification-template-dto';
 import {ClientNotificationService} from '../client-notification.service';
 import {MessageTemplateCreateComponent} from '../message-template-create/message-template-create.component';
 import {DeleteMessageTemplateDialogComponent} from '../delete-message-template-dialog/delete-message-template-dialog.component';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {NotificationStatus} from '../../messages/_models/notification-status';
 
 @Component({
     selector: 'app-message-templates-list',
@@ -20,6 +22,7 @@ export class MessageTemplatesListComponent implements OnInit, OnDestroy {
     @ViewChild(MatTable, {static: true}) table: MatTable<NotificationTemplateDto>;
 
     editableTexts: { [id: string]: NotificationTemplateDto } = {};
+    statuses: { label: string, value: NotificationStatus }[] = [];
 
     displayedColumns: string[] = [
         // 'id',
@@ -29,20 +32,27 @@ export class MessageTemplatesListComponent implements OnInit, OnDestroy {
 
         'star', // Действия
     ];
+    spinnerText = '';
 
-    constructor(public clientNotificationService: ClientNotificationService, public dialog: MatDialog, private _el: ElementRef) {
+    constructor(private spinner: NgxSpinnerService,
+                public clientNotificationService: ClientNotificationService, public dialog: MatDialog, private _el: ElementRef) {
     }
 
     ngOnInit() {
+        this.statuses = this.clientNotificationService.getStatusDictionary();
         fromEvent(document, 'keyup').pipe(
             untilDestroyed(this),
             filter((event: KeyboardEvent) => event.key === 'Escape' && Object.keys(this.editableTexts).length > 0),
             tap(() => this.editableTexts = {}),
         ).subscribe();
 
-
+        this.paginator._intl.itemsPerPageLabel = 'Шаблонов на странице';
         this.dataSource.paginator = this.paginator;
-        this.clientNotificationService.getMessageTemplates().pipe(tap(templates => this.dataSource.data = templates)).subscribe();
+        this.spinnerText = 'Получение шаблонов сообщений пользователей';
+        this.spinner.show();
+        this.clientNotificationService.getMessageTemplates().pipe(
+            untilDestroyed(this), tap(templates => this.dataSource.data = templates),
+            finalize(() => this.spinner.hide())).subscribe();
     }
 
     deleteMessage(order: NotificationTemplateDto) {
@@ -51,7 +61,7 @@ export class MessageTemplatesListComponent implements OnInit, OnDestroy {
             data: order,
         }).afterClosed().pipe(
             filter(result => !!result),
-            switchMap((result: NotificationTemplateDto) => this.clientNotificationService.deleteTemplate(result.id)),
+            switchMap((result: NotificationTemplateDto) => this.clientNotificationService.deleteTemplate(result)),
             tap(() => this.dataSource.data = this.dataSource.data.filter(i => i.id !== order.id)),
         ).subscribe();
     }

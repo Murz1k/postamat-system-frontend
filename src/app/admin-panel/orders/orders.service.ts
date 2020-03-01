@@ -32,6 +32,7 @@ export class OrdersService {
         externalPackaging: 'Внешнее упаковочное место',
         postamateUploadType: 'Тип загрузки в постомат',
         postamateId: 'ID постамата',
+        postamate: 'Постамат',
         vendorCode: 'Артикул',
         manufacturer: 'Производитель',
         productName: 'Наименование товара',

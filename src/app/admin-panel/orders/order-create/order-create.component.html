@@ -103,8 +103,12 @@
   <!-- <br> -->
 
   <mat-form-field appearance="fill">
-    <mat-label>{{orderService.fieldNames['postamateId']}}</mat-label>
-    <input matInput formControlName="postamateId">
+    <mat-label>{{orderService.fieldNames['postamate']}}</mat-label>
+    <mat-select formControlName="postamateId">
+      <mat-option *ngFor="let postamate of pickUpPointService.getAllPickUpPoints() | async" [value]="postamate.id">
+        {{postamate.name}}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
   <!-- <br> -->
 
@@ -169,4 +173,4 @@
   <!-- <br> -->
 </form>
 
-<button mat-button (click)="addOrder()" color="primary">Добавить</button>
+<button (click)="addOrder()" class="btn waves-effect waves-light">Добавить</button>

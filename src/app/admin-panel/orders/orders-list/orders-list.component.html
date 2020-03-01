@@ -1,6 +1,15 @@
+<ngx-spinner
+        bdOpacity = 0.9
+        bdColor = "#333"
+        size = "large"
+        color = "#fff"
+        type = "square-jelly-box"
+        [fullScreen] = "true">
+    <p style="color: white" > {{spinnerText}} </p>
+</ngx-spinner>
 <h1>Список заказов</h1>
-<div class="button-container">
-    <button mat-button color="primary" (click)="createOrder()">Добавить заказ</button>
+<div>
+    <button class="btn waves-effect waves-light" (click)="createOrder()">Добавить заказ</button>
 </div>
 <div class="table-container">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -175,13 +184,17 @@
             </td>
         </ng-container>
 
-        <ng-container matColumnDef="postamateId">
-            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['postamateId']}}</th>
+        <ng-container matColumnDef="postamate">
+            <th mat-header-cell *matHeaderCellDef>{{orderService.fieldNames['postamate']}}</th>
             <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
                 <ng-container *ngIf="editableOrders[element.id]">
-                    <input matInput (keyup.enter)="updateOrder(editableOrders[element.id])"[(ngModel)]="editableOrders[element.id].postamateId">
+                    <mat-select [(ngModel)]="editableOrders[element.id].postamateId">
+                        <mat-option *ngFor="let postamate of pickUpPointService.getAllPickUpPoints() | async" [value]="postamate.id">
+                            {{postamate.name}}
+                        </mat-option>
+                    </mat-select>
                 </ng-container>
-                <ng-container *ngIf="!editableOrders[element.id]">{{element.postamateId}}</ng-container>
+                <ng-container *ngIf="!editableOrders[element.id]">{{element.postamate?.name}}</ng-container>
             </td>
         </ng-container>
 
@@ -286,22 +299,23 @@
         </ng-container>
 
         <!-- Star Column -->
-        <ng-container matColumnDef="star" stickyEnd>
+        <ng-container matColumnDef="star">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
-                <button mat-icon-button [matMenuTriggerFor]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                    <ng-container *ngIf="editableOrders[element.id]">
-                        <button mat-menu-item (click)="updateOrder(editableOrders[element.id])">Сохранить</button>
-                        <button mat-menu-item (click)="cancelEdit(element)">Отменить</button>
-                    </ng-container>
+                <div class="flex-align">
                     <ng-container *ngIf="!editableOrders[element.id]">
-                        <button mat-menu-item (click)="startEdit(element)">Изменить</button>
-                        <button mat-menu-item (click)="deleteOrder(element)">Удалить</button>
+                    <button class="btn btn-small grey waves-effect" (click)="startEdit(element)">
+                        <i class="material-icons">mode_edit</i>
+                    </button>
+                    <button class="btn btn-small red waves-effect" (click)="deleteOrder(element)">
+                        <i class="material-icons">delete</i>
+                    </button>
                     </ng-container>
-                </mat-menu>
+                    <ng-container *ngIf="editableOrders[element.id]">
+                        <button class="btn btn-small waves-effect" (click)="updateOrder(editableOrders[element.id])">Сохранить</button>
+                        <button class="btn btn-small waves-effect" (click)="cancelEdit(element)">Отменить</button>
+                    </ng-container>
+                </div>
             </td>
         </ng-container>
 

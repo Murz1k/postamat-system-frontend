@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {OrdersService} from '../orders.service';
 import {OrderDto} from '../_models/order-dto';
@@ -6,6 +6,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {debounceTime, filter, switchMap, tap} from 'rxjs/operators';
 import {untilDestroyed} from 'ngx-take-until-destroy';
 import {MatDialogRef} from '@angular/material';
+import {PickUpPointService} from '../../../common/service/pick-up-point.service';
 
 @Component({
   selector: 'app-order-create',
@@ -16,7 +17,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
   private tasksSubject: BehaviorSubject<Observable<any>> = new BehaviorSubject<Observable<any>>(undefined);
 
-  constructor(public dialogRef: MatDialogRef<OrderCreateComponent>, private fb: FormBuilder, public orderService: OrdersService) {
+  constructor(public pickUpPointService: PickUpPointService, public dialogRef: MatDialogRef<OrderCreateComponent>, private fb: FormBuilder, public orderService: OrdersService) {
   }
 
   ngOnInit() {
@@ -61,36 +62,36 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
     });
 
     // Для теста
-    this.form.patchValue({
-      supplier: 'string',
-      orderId: 'string',
-      externalId: 'string',
-      customerName: 'string',
-      customerPhone: 'string',
-      customerExternalId: 'string',
-      customerEmail: 'string',
-      customerDeliveryAddress: 'string',
-      productSize: 'string',
-      productWidth: 0,
-      productHeight: 0,
-      productDepth: 0,
-      productWeight: 0,
-      productExternalBarCode: 'string',
-      productManufacturerBarCode: 'string',
-      externalPackaging: 'string',
-      postamateUploadType: 'string',
-      postamateId: '42fa7e6d-3f4e-40cd-8a58-b98c855ef44b',
-      vendorCode: 'string',
-      manufacturer: 'string',
-      productName: 'string',
-      quantity: 0,
-      price: 0,
-      sum: 0,
-      manufacturerCountry: 'string',
-      gtd: 'string',
-      vat: 0,
-      paymentType: 0
-    });
+    // this.form.patchValue({
+    //   supplier: 'string',
+    //   orderId: 'string',
+    //   externalId: 'string',
+    //   customerName: 'string',
+    //   customerPhone: 'string',
+    //   customerExternalId: 'string',
+    //   customerEmail: 'string',
+    //   customerDeliveryAddress: 'string',
+    //   productSize: 'string',
+    //   productWidth: 0,
+    //   productHeight: 0,
+    //   productDepth: 0,
+    //   productWeight: 0,
+    //   productExternalBarCode: 'string',
+    //   productManufacturerBarCode: 'string',
+    //   externalPackaging: 'string',
+    //   postamateUploadType: 'string',
+    //   postamateId: '42fa7e6d-3f4e-40cd-8a58-b98c855ef44b',
+    //   vendorCode: 'string',
+    //   manufacturer: 'string',
+    //   productName: 'string',
+    //   quantity: 0,
+    //   price: 0,
+    //   sum: 0,
+    //   manufacturerCountry: 'string',
+    //   gtd: 'string',
+    //   vat: 0,
+    //   paymentType: 0
+    // });
   }
 
   addOrder() {
@@ -98,6 +99,7 @@ export class OrderCreateComponent implements OnInit, OnDestroy {
       // tslint:disable-next-line:forin
       for (const i in this.form.controls) {
         this.form.controls[i].markAsDirty();
+        this.form.controls[i].markAsTouched();
         this.form.controls[i].updateValueAndValidity();
       }
       return;

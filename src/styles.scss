@@ -257,3 +257,132 @@ https://github.com/Dogfalo/materialize/issues/5436
 .error-class {
   color: rgb(221, 80, 67)
 }
+
+.flex-align {
+  display: flex;
+  align-content: center;
+  width: fit-content;
+}
+
+//
+
+nz-range-picker nz-picker input.ant-calendar-range-picker-input {
+  all: initial;
+  color: #6b6b6b;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+date-range-popup {
+  calendar-input input {
+    all: initial;
+    border-bottom: initial !important;
+    box-shadow: initial !important;
+  }
+}
+
+nz-range-picker.ant-calendar-picker:hover .ant-calendar-picker-input:not(.ant-input-disabled) {
+  border-color: #26a69a;
+}
+
+nz-range-picker.ant-calendar-picker:focus .ant-calendar-picker-input:not(.ant-input-disabled) {
+  border-color: #26a69a;
+  box-shadow: 0 0 0 2px rgba(38, 166, 154, 0.2);
+}
+
+.ant-calendar-range-picker-separator {
+  padding: 0 16px 0 0;
+}
+
+li a {
+  width: 100%;
+}
+
+date-table {
+  .ant-calendar-today .ant-calendar-date {
+    border-radius: 50%;
+    background-color: #26a69a;
+    border-color: #26a69a;
+    color: white;
+  }
+}
+
+.ant-calendar-cell div {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+date-range-popup .ant-calendar-range {
+  width: 608px;
+}
+
+.ant-calendar-range td.ant-calendar-in-range-cell::before {
+  background: rgba(38, 166, 154, 0.2);
+}
+
+.ant-calendar-range td.ant-calendar-in-range-cell::before, td .ant-calendar-date:hover {
+  background: rgba(38, 166, 154, 0.2);
+}
+
+.ant-calendar-range .ant-calendar-selected-end-date .ant-calendar-date, .ant-calendar-range .ant-calendar-selected-start-date .ant-calendar-date, td .ant-calendar-date:active {
+  border-radius: 50%;
+  color: #26a69a !important;
+  background-color: transparent !important;
+  border-color: #26a69a !important;
+}
+
+// Material to Normalize
+
+mat-paginator.mat-paginator {
+  background: transparent;
+}
+
+table.mat-table {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+th.mat-header-cell {
+  color: #000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+td.mat-cell {
+  padding: 15px 5px;
+  display: table-cell;
+  text-align: left;
+  vertical-align: middle;
+  border-radius: 2px;
+  font-size: 14.5px;
+  line-height: 1.15;
+}
+
+mat-form-field.mat-form-field-appearance-fill {
+  .mat-form-field-infix {
+    //padding: 0;
+
+    input, input:not([type]):focus:not([readonly]) {
+      margin: 0;
+      border: none;
+      box-shadow: none;
+      height: 100%;
+    }
+  }
+}
+
+.mat-form-field-appearance-fill .mat-form-field-label {
+  top: 1.09375em;
+  margin-top: -.5em;
+}
+
+mat-form-field.mat-form-field:not(.mat-form-field-invalid) .mat-form-field-ripple {
+  background-color: #26a69a;
+}
+
+mat-form-field.mat-form-field:not(.mat-form-field-invalid) .mat-form-field-label {
+  color: #26a69a;
+}

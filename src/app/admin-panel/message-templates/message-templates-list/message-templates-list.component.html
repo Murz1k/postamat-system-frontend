@@ -1,6 +1,15 @@
-<h1>Шаблоны смс текстов</h1>
-<div class="button-container">
-    <button mat-button color="primary" (click)="createTemplate()">Добавить шаблон</button>
+<ngx-spinner
+        bdOpacity=0.9
+        bdColor="#333"
+        size="large"
+        color="#fff"
+        type="square-jelly-box"
+        [fullScreen]="true">
+    <p style="color: white"> {{spinnerText}} </p>
+</ngx-spinner>
+<h1>Шаблоны уведомлений</h1>
+<div>
+    <button class="btn waves-effect waves-light" (click)="createTemplate()">Добавить шаблон</button>
 </div>
 <div class="table-container">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -31,10 +40,19 @@
             <th mat-header-cell *matHeaderCellDef>{{clientNotificationService.fieldNames['status']}}</th>
             <td mat-cell (dblclick)="startEdit(element)" *matCellDef="let element">
                 <ng-container *ngIf="editableTexts[element.id]">
-                    <input matInput (keyup.enter)="updateMessage(editableTexts[element.id])"
-                           [(ngModel)]="editableTexts[element.id].status">
+                    <mat-select [(ngModel)]="editableTexts[element.id].status" (keyup.enter)="updateMessage(editableTexts[element.id])">
+                        <mat-option *ngFor="let status of statuses" [value]="status.value">
+                            {{status.label}}
+                        </mat-option>
+                    </mat-select>
                 </ng-container>
-                <ng-container *ngIf="!editableTexts[element.id]">{{element.status}}</ng-container>
+                <ng-container *ngIf="!editableTexts[element.id]">
+                    <ng-container [ngSwitch]="element.status">
+                        <ng-container *ngFor="let status of statuses">
+                            <ng-container *ngSwitchCase="status.value">{{status.label}}</ng-container>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
             </td>
         </ng-container>
 
